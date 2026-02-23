@@ -22,6 +22,9 @@ public class MessageService {
 
     public Message findMessageById(int id, String caps) {
         Message message = repository.findMessageById(id);
+        if (message == null){
+            return null;
+        }
         if (caps != null && caps.equals("yes")) {
             return new Message(message.getId(), message.getContent().toUpperCase());
         }

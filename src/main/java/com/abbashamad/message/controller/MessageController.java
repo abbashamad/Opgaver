@@ -23,11 +23,19 @@ public class MessageController {
         this.service = messageService;
     }
 
-    @GetMapping("{id}")
-    public ResponseEntity<List<Message>> getMessages(@PathVariable int id, @RequestParam(required = false) String caps) {
+    @GetMapping("")
+    public ResponseEntity<List<Message>> getMessages() {
         List<Message> messages = service.getMessages();
-        Message message = new Message(id, caps);
-        getMessages(id, caps);
         return new ResponseEntity<>(messages, HttpStatus.OK);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Message> getMessageById(@PathVariable int id, @RequestParam(required = false) String caps) {
+        Message message = service.findMessageById(id, caps);
+        if (message == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
+
 }
